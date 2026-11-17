@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>입학사정관 평가 화면 예시</title>
+<style>
+:root{--head:#8392b5;--head2:#6a7ca6;--line:#d5dae6;--zebra:#f4f6fa;--ink:#2b2f38;--sub:#6b7280;--pink:#f06f94;--navy:#2f4a77;--peach:#fde9cf;--cream:#fff7ec;--hit:#fddede;--red:#d92b2b;--help:#ece4f6;--helpline:#6b4ea0}
+*{box-sizing:border-box}
+body{margin:0;background:#eef0f4;color:var(--ink);font:13px/1.5 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.top{background:#26344d;color:#fff;display:flex;align-items:center;gap:16px;padding:8px 18px;flex-wrap:wrap}
+.top b{font-size:15px}.top .sp{flex:1}
+.top button{background:#fff;color:#26344d;border:0;border-radius:4px;padding:5px 12px;font:inherit;font-weight:700;cursor:pointer}
+.top button.on{background:#ffd54a}
+.app{max-width:1220px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 0 1px #d9dde6}
+.who{display:flex;gap:22px;flex-wrap:wrap;padding:10px 18px;background:#f7f8fb;border-bottom:1px solid var(--line);font-size:12.5px}
+.who span b{color:var(--navy)}
+.tabs{display:flex;background:#e9ecf2;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{flex:1 0 auto;min-width:150px;padding:13px 10px;border:0;border-right:1px solid #fff;background:#e9ecf2;color:#444;font:inherit;font-weight:700;cursor:pointer}
+.tabs button.red{color:#e5484d}
+.tabs button.act{background:#fff;color:#111;box-shadow:inset 0 -3px 0 var(--head2)}
+.tabs button.red.act{color:#e5484d}
+.pane{display:none;padding:18px}.pane.act{display:block}
+h3{margin:0 0 8px;font-size:15px}
+.anchors{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.anchors a{border:1px solid var(--line);border-radius:14px;padding:3px 12px;color:var(--navy);text-decoration:none;background:#fff}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;border:1px solid #28367a;padding:14px;margin-bottom:18px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0}
+.legend label{cursor:pointer;color:#bbb;display:flex;align-items:center;gap:4px;user-select:none}
+.legend label i{width:14px;height:3px;background:#ccc;display:inline-block}
+.legend label.on{color:#444}.legend label.on i{background:var(--pink)}
+.legend2{display:flex;gap:14px;justify-content:flex-end;font-size:12px}
+.legend2 i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:4px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #e3e6ee;padding:6px 7px;text-align:center;font-size:12.5px}
+thead th{background:var(--head);color:#fff;font-weight:700}
+thead tr.g th{background:var(--head2)}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+td.l{text-align:left}td.b{font-weight:700}
+td.hit{background:var(--hit)!important}
+td a{color:var(--navy);text-decoration:underline;cursor:pointer}
+td a.hit{color:#222}
+tr.se td{background:#faf6ee!important;text-align:left;padding:14px 22px;color:#333;line-height:1.8}
+tr.se.closed{display:none}
+.chips{display:flex;gap:6px;margin:6px 0 10px}
+.chips button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:3px 12px;font:inherit;cursor:pointer}
+.chips button.on{background:var(--head2);color:#fff;border-color:var(--head2)}
+.help{display:none;background:var(--help);border-left:5px solid var(--helpline);border-radius:6px;padding:11px 15px;margin:0 0 14px;line-height:1.7}
+body.helpon .help{display:block}
+.help h4{margin:0 0 4px;color:var(--helpline);font-size:13.5px}
+.help ul{margin:0;padding-left:18px}
+.help .our{margin-top:6px;padding-top:6px;border-top:1px dashed #b9a6d8;color:#2d5a45;font-weight:700}
+.src{color:var(--sub);font-size:11.5px;margin-top:14px}
+.pop{position:fixed;z-index:9;background:#fff;border:1px solid #bbb;box-shadow:0 6px 20px #0003;display:none}
+.pop table th{background:#eef0f5;color:#333}
+.pop .x{position:absolute;right:4px;top:0;cursor:pointer;color:#888}
+/* 교육과정편성표 */
+.cur th:first-child,.cur td:first-child{width:90px}
+.cur td{vertical-align:top;text-align:left;padding:8px 10px}
+.cur td.k{text-align:center;vertical-align:middle;font-weight:700;background:#fff}
+.cur tr.r0 td{background:#fff}.cur tr.r1 td{background:var(--cream)}.cur tr.r2 td{background:#fff}.cur tr.r3 td{background:var(--zebra)}
+.cur tr.r1 td.k{background:var(--cream)}.cur tr.r3 td.k{background:var(--zebra)}
+.pill{display:block;width:fit-content;margin:3px 0;padding:1px 9px;border-radius:12px;background:var(--peach);cursor:pointer;line-height:1.5}
+.pill:hover{outline:1px solid #e0a35c}
+.plain{display:block;margin:3px 0;padding:1px 9px;color:#555}
+.keyline{display:flex;gap:16px;margin:4px 0 10px;font-size:12px;align-items:center}
+/* 행동특성 */
+.bh{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.bh h3{margin:0}
+.bh button{border:1px solid #cfd5e3;background:#f2f4f8;color:#666;border-radius:3px;padding:3px 10px;font:inherit;cursor:pointer}
+.bh button.first{background:#fff;color:#2f5ea8;border-color:#7da0d8}
+.bh button.on{background:#dfe9fb;color:#1d4a9a;border-color:#7da0d8}
+.bh input{border:1px solid #bbb;padding:3px 6px;font:inherit;width:140px;display:none}
+.bh input.show{display:inline-block}
+.beh td{vertical-align:middle}
+.beh td.t{text-align:left;background:var(--cream)!important;padding:12px 16px;line-height:1.85;color:#444;font-size:13px}
+.beh th{padding:7px}
+mark.sim{background:#fff;color:inherit;padding:0}
+body.simon mark.sim{background:#ffe3c2}
+mark.kw{background:#ffe55c;color:#000;padding:0 1px}
+mark.bl{background:transparent;color:inherit;padding:0}
+body.bloon mark.bl{background:#222;color:#222;border-radius:2px}
+.scan{border:1px solid #ccc;padding:18px;background:#fafafa}
+.scan h4{margin:0 0 8px;font-size:14px}
+.scan table th{background:#fff;color:#222;border:1px solid #888}.scan td{border:1px solid #888;background:#fff!important}
+.ph{padding:50px;text-align:center;color:#888;border:2px dashed #ccd;border-radius:8px}
+</style>
+</head>
+<body class="helpon simon">
+<div class="top">
+ <b>입학사정관 평가 시스템</b><span>(가상 예시 화면 · 학부모 이해용)</span><span class="sp"></span>
+ <button id="hb" class="on">학부모 해설 보기</button>
+</div>
+<div class="app">
+ <div class="who">
+  <span><b>대학</b> ○○대학교 (가상)</span><span><b>모집단위</b> 소프트웨어학과</span><span><b>전형</b> 특성화고교졸업자전형</span>
+  <span><b>지원자</b> ○○○ (이름 가림) · 수험번호 ********</span><span><b>평가</b> 서류평가 1단계</span>
+ </div>
+ <div class="tabs" id="tabs"></div>
+
+ <!-- 학생부(교과) -->
+ <section class="pane" data-t="0">
+  <div class="anchors"><a href="#a1">학년별 성적 추이</a><a href="#a2">과목별 학기별 성적</a><a href="#a3">세부과목별 성적</a><a href="#a1">주요과목/전과목</a></div>
+  <div class="help"><h4>① 학부모 해설 · 성적을 이렇게 보여 줍니다</h4><ul>
+   <li>학기마다 성적이 올랐는지 내려갔는지 한눈에 보는 <b>꺾은선</b>과, 같은 모집단위(같은 과) 지원자 평균과 비교하는 <b>레이더 그림</b>이 함께 나옵니다.</li>
+   <li>표에는 <b>지원자 석차등급</b>과 <b>모집단위 지원자들의 석차등급(평균·최고·중간·최저)</b>이 나란히 있어, 내 아이가 지원자 전체에서 어느 위치인지 바로 비교됩니다.</li>
+   <li>등급을 이수한 과목 수(등급이수)와 전체 이수 과목 수(전체이수)를 구분해 두어, 등급이 매겨지지 않는 과목이 얼마나 있는지도 확인합니다.</li></ul>
+   <div class="our">우리 학과 연결: 전공 과목 성적도 평가 자료이므로 전공 수업을 꾸준히 이수하는 것이 중요합니다.</div></div>
+  <div class="grid" id="a1">
+   <div><h3>학기별 교과성적 등급추이</h3><div class="legend" id="lg"></div><svg id="line" viewBox="0 0 560 330" width="100%"></svg></div>
+   <div><h3>주요과목 비교</h3><div class="legend2"><span><i style="background:var(--pink)"></i>지원자</span><span><i style="background:var(--navy)"></i>모집단위</span></div><svg id="radar" viewBox="0 0 320 300" width="100%"></svg></div>
+  </div>
+  <h3 id="a2">학교생활기록부 성적산출표</h3>
+  <div class="tw"><table id="grade"></table></div>
+
+  <h3 id="a3" style="margin-top:26px">교과 학습 발달상황 · 과목별 세부 내용</h3>
+  <div class="help"><h4>② 학부모 해설 · 과목 하나하나를 클릭해 확인합니다</h4><ul>
+   <li>과목을 클릭하면 <b>과목별 세부능력 및 특기사항(세특)</b>이 열리고, <b>추정등수</b>도 보입니다.</li>
+   <li>과목구분 칸에서 일반선택·진로선택·전문교과를 평가자가 한눈에 알아봅니다.</li>
+   <li>과목과 세특 내용이 이어지는지, 세특의 수행평가 내용과 과목 성적이 맞는지 살핍니다.</li>
+   <li>모집단위의 성격에 따라 특정 교과를 더 눈여겨봅니다. 과목명을 누르면 등급·성취도·이수자수·원점수·평균·표준편차·추정등수를 볼 수 있습니다.</li></ul>
+   <div class="our">우리 학과 연결: 전공 수업의 세특에 ‘왜 그 주제를 골랐는지, 무엇을 고쳤는지’가 남도록 기록합니다.</div></div>
+  <div class="chips" id="chips"></div>
+  <div class="tw"><table id="subj"></table></div>
+  <p class="src">※ 화면 구성은 입학사정관 평가 프로그램 소개 글(네이버 블로그 ‘군포수학전문학원’, 2023.5.2, 출처 표기 ‘xx대학교 평가 화면 일부’)의 캡처를 참고해 다시 그린 <b>가상 예시</b>입니다. 학생·점수·세특은 모두 가상이며, 실제 화면은 대학마다 다를 수 있습니다.</p>
+ </section>
+
+ <!-- 학생부(비교과) -->
+ <section class="pane" data-t="1">
+  <div class="help"><h4>③ 학부모 해설 · 행동특성 및 종합의견은 이렇게 봅니다</h4><ul>
+   <li><b>지원자의 특징</b>을 핵심적으로 파악할 수 있는 부분입니다.</li>
+   <li>해당 학년 <b>담임선생님이 기재</b>하며, 추천서와 비슷한 성격입니다.</li>
+   <li>인성적인 부분, 학생의 변화, 학업적 노력 등의 정보를 확인할 수 있습니다.</li>
+   <li>화면 위쪽에는 <b>유사문장 비교</b>(다른 지원자와 비슷한 문장 음영 표시), <b>키워드 설정</b>, <b>블라인드 체킹</b>(학교명 등 드러나면 안 되는 표현 점검) 기능이 있습니다.</li></ul>
+   <div class="our">우리 학과 연결: 담임과 전공 교사가 학생을 직접 본 장면을 한 줄이라도 구체적으로 남기도록 합니다.</div></div>
+  <div class="bh"><h3>.행동특성</h3><button class="first" id="b-sim">유사문장 비교</button><span style="flex:1"></span><input id="kwin" placeholder="키워드 입력 후 Enter"><button id="b-kw">키워드설정</button><button id="b-bl">블라인드 체킹</button></div>
+  <div class="tw"><table class="beh" id="beh"></table></div>
+  <p class="src">※ 가상 예시 문장입니다. ‘유사문장 비교’를 누르면 음영(다른 학생과 비슷한 문장), ‘블라인드 체킹’을 누르면 가림 처리가 켜지고 꺼집니다.</p>
+ </section>
+
+ <!-- 이수교과리스트 -->
+ <section class="pane" data-t="2"><h3>이수교과리스트</h3><div class="tw"><table id="list"></table></div></section>
+
+ <!-- 교육과정편성표 -->
+ <section class="pane" data-t="3">
+  <div class="help"><h4>④ 학부모 해설 · ‘선택하지 않은 것’도 보입니다</h4><ul>
+   <li>이 학생이 <b>선택할 수 있었는데 하지 않은 것인지</b>, 아니면 <b>학교 사정으로 선택할 수 없었던 것인지</b> 평가자가 구분해 볼 수 있도록 학교 교육과정 편성이 함께 제공됩니다.</li>
+   <li>공통과목·일반선택·진로선택·전문교과 등 교과군이 한눈에 보이고, 색칠된 것이 이 학생이 이수한 과목입니다.</li>
+   <li>과목을 클릭하면 해당 과목의 등급·단위수·원점수 등을 다시 확인할 수 있습니다.</li></ul>
+   <div class="our">우리 학과 연결: 전공 교과를 체계적으로 이수한 흔적이 곧 학과 노력의 근거가 됩니다. 특성화고 특별전형은 전문교과 24학점 이상 이수 여부를 봅니다.</div></div>
+  <h3>학기별 교육이수현황</h3>
+  <div class="keyline"><span class="pill" style="margin:0;cursor:default">색칠</span> 이수한 과목 <span class="plain" style="margin:0;display:inline">일반 글자</span> 학교가 개설했지만 이수하지 않은(또는 아직 반영되지 않은) 과목</div>
+  <div class="tw"><table class="cur" id="cur"></table></div>
+  <p class="src">※ 교과명은 우리 학과 교육과정을 참고한 가상 예시이며, 점수·학기 배치는 가상입니다.</p>
+ </section>
+
+ <!-- 학생부(스캔) -->
+ <section class="pane" data-t="4">
+  <div class="scan"><h4>〈진로 선택 과목〉 학교생활기록부 원본 이미지 (가상 예시)</h4>
+   <table><thead><tr><th>학기</th><th>교과</th><th>과목</th><th>단위수</th><th>원점수/과목평균</th><th>성취도(수강자수)</th><th>성취도별 분포비율</th></tr></thead><tbody>
+    <tr><td rowspan="2">1</td><td>예술</td><td>음악 감상과 비평</td><td>2</td><td>93/85</td><td>A(21)</td><td>A(36.1) B(52.4) C(11.5)</td></tr>
+    <tr><td>정보</td><td>정보</td><td>2</td><td>90/78.6</td><td>A(21)</td><td>A(30.2) B(55.0) C(14.8)</td></tr>
+    <tr><td rowspan="2">2</td><td>기술·가정</td><td>응용 프로그래밍</td><td>2</td><td>69/66.8</td><td>B(13)</td><td>A(15.4) B(61.5) C(23.1)</td></tr>
+    <tr><td>예술</td><td>음악 감상과 비평</td><td>2</td><td>92/82.4</td><td>A(21)</td><td>A(33.0) B(54.0) C(13.0)</td></tr>
+    <tr><td colspan="3"><b>이수단위 합계</b></td><td>8</td><td colspan="3"></td></tr></tbody></table>
+   <p class="src" style="margin-bottom:0">원본(스캔) 이미지는 입력된 표와 서로 맞는지 확인할 때 사용합니다.</p></div>
+ </section>
+ <section class="pane" data-t="5"><div class="ph">학생부 대체 서류 없음 (검정고시·해외학교 등 해당 시 업로드되는 칸)</div></section>
+</div>
+<div class="pop" id="pop"><span class="x" onclick="this.parentNode.style.display='none'">✕</span><table><thead><tr><th>학년-학기</th><th>등급</th><th>단위수</th><th>원점수</th><th>평균점수</th><th>표준편차</th><th>이수자수</th></tr></thead><tbody><tr id="popr"></tr></tbody></table></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const TABS=['학생부(교과)','학생부(비교과)','이수교과리스트','교육과정편성표','학생부(스캔)','학생부대체서류'];
+$('#tabs').innerHTML=TABS.map((t,i)=>`<button class="${i>3?'red':''}" data-i="${i}">${t}</button>`).join('');
+function tab(i){$$('.tabs button').forEach(b=>b.classList.toggle('act',+b.dataset.i===i));$$('.pane').forEach(p=>p.classList.toggle('act',+p.dataset.t===i));$('#pop').style.display='none'}
+$$('.tabs button').forEach(b=>b.onclick=()=>{tab(+b.dataset.i);location.hash='t'+b.dataset.i});
+$('#hb').onclick=()=>{const on=document.body.classList.toggle('helpon');$('#hb').classList.toggle('on',on);$('#hb').textContent=on?'학부모 해설 보기':'학부모 해설 숨김'};
+
+/* ---- 성적 ---- */
+const SEM=['1-1학기','1-2학기','2-1학기','2-2학기','3-1학기*','3-2학기*'];
+const G=[ // 과목구분, 지원자[평균,등급이수,전체이수,1-1..3-2], 모집단위[평균,최고,중간,최저,등급이수,전체이수]
+['주요과목',[2.57,103,103,1.80,2.55,3.20,3.00,2.35,null],[2.89,1.22,2.69,7.41,121.63,122.63]],
+['전과목',[2.78,133,150,2.44,2.81,3.15,2.96,2.54,null],[2.93,1.29,2.78,7.51,139.19,161.25]],
+['국어영어',[2.98,57,57,2.43,3.29,3.50,3.14,2.47,null],[2.76,1.09,2.47,8.00,50.77,50.89]],
+['수학과학',[2.15,26,26,1.43,1.43,3.25,3.00,2.75,null],[3.21,1.20,3.12,7.22,36.32,36.48]],
+['영어수학',[2.98,57,57,2.43,2.86,3.50,3.36,2.47,null],[3.02,1.13,2.82,7.80,49.22,49.46]],
+['국어',[2.60,15,15,2.00,3.00,3.00,2.00,3.00,null],[2.66,1.00,2.43,7.75,24.20,24.20]],
+['영어',[3.12,42,42,2.75,3.50,3.64,3.45,2.33,null],[2.85,1.00,2.60,8.10,26.57,26.69]],
+['수학',[2.60,15,15,2.00,2.00,3.00,3.00,3.00,null],[3.16,1.08,2.95,7.30,22.66,22.77]],
+['사회',[1.95,20,20,1.50,3.00,1.00,2.00,1.50,null],[2.72,1.05,2.50,7.16,34.54,35.27]],
+['과학',[1.55,11,11,1.00,1.00,4.00,3.00,2.00,null],[3.30,1.00,3.08,7.18,13.67,13.71]],
+['기타',[4.20,5,22,6.00,7.00,3.00,2.00,null,null],[3.21,1.00,2.60,7.56,7.66,27.69]]];
+const f2=v=>v==null?'-':(+v).toFixed(2);
+$('#grade').innerHTML='<thead><tr class="g"><th rowspan="2">과목구분</th><th colspan="9">지원자 석차등급</th><th colspan="6">모집단위 석차등급</th></tr><tr><th>평균</th><th>등급이수</th><th>전체이수</th>'+SEM.map(s=>`<th>${s.slice(0,3)}</th>`).join('')+'<th>평균</th><th>최고</th><th>중간</th><th>최저</th><th>등급이수</th><th>전체이수</th></tr></thead><tbody>'+
+G.map(([n,a,m])=>`<tr><td>${n}</td><td class="b">${f2(a[0])}</td><td>${a[1]}</td><td>${a[2]}</td>${a.slice(3).map(v=>`<td>${f2(v)}</td>`).join('')}<td class="b">${f2(m[0])}</td>${m.slice(1,4).map(f2).map(v=>`<td>${v}</td>`).join('')}<td>${f2(m[4])}</td><td>${f2(m[5])}</td></tr>`).join('')+'</tbody>';
+let on=new Set(['주요과목']);
+function drawLine(){
+ const W=560,H=330,L=36,R=30,T=14,B=34,x=i=>L+i*(W-L-R)/5,y=v=>T+(v-1)*(H-T-B)/8;let s='';
+ for(let v=1;v<=9;v++)s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e6e8ee"/><text x="${L-8}" y="${y(v)+4}" font-size="11" text-anchor="end" fill="#555">${v}</text>`;
+ SEM.forEach((t,i)=>s+=`<text x="${x(i)}" y="${H-12}" font-size="11" text-anchor="middle" fill="#555">${t.replace('학기','학기')}</text>`);
+ G.forEach(([n,a],k)=>{if(!on.has(n))return;const pts=a.slice(3).map((v,i)=>v==null?null:[x(i),y(v),v]).filter(Boolean);
+  const c=k?['#5b8def','#47a67f','#c98b2b','#8a63d2','#d9534f','#2aa6b8','#7a7a7a','#b05fa8','#4f6f2f','#999'][k%10]:'#f06f94';
+  s+=`<polyline fill="none" stroke="${c}" stroke-width="2" points="${pts.map(p=>p[0]+','+p[1]).join(' ')}"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#fff" stroke="${c}"/><text x="${p[0]}" y="${p[1]-8}" font-size="11" text-anchor="middle" fill="${c}">${p[2]}</text>`).join('')});
+ $('#line').innerHTML=s}
+$('#lg').innerHTML=G.map(g=>`<label data-n="${g[0]}" class="${on.has(g[0])?'on':''}"><i></i>${g[0]}</label>`).join('');
+$$('#lg label').forEach(l=>l.onclick=()=>{const n=l.dataset.n;on.has(n)?on.delete(n):on.add(n);l.classList.toggle('on');drawLine()});
+drawLine();
+(function radar(){const cx=160,cy=150,R=100,names=['국어','과학','사회','수학','영어'],get=(n,k)=>G.find(g=>g[0]===n)[k][0];
+ const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/5,r=R*(9-v)/8;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};let s='';
+ for(let v=1;v<=9;v+=2)s+=`<polygon points="${names.map((_,i)=>pt(i,v).join(',')).join(' ')}" fill="${v%4==1?'#f1f1f1':'#fff'}" stroke="#ddd"/>`;
+ names.forEach((n,i)=>{const[p,q]=pt(i,1);s+=`<line x1="${cx}" y1="${cy}" x2="${p}" y2="${q}" stroke="#ddd"/><text x="${cx+(R+20)*Math.cos(-Math.PI/2+i*2*Math.PI/5)}" y="${cy+(R+16)*Math.sin(-Math.PI/2+i*2*Math.PI/5)+4}" font-size="12" text-anchor="middle" fill="#333">${n}</text>`});
+ [[1,'#f06f94'],[2,'#2f4a77']].forEach(([k,c])=>{s+=`<polygon points="${names.map((n,i)=>pt(i,get(n,k)).join(',')).join(' ')}" fill="${c}22" stroke="${c}" stroke-width="2"/>`});
+ $('#radar').innerHTML=s})();
+
+/* ---- 세부과목 ---- */
+const SUBJ=[ // 교과,과목,등급,추정등수,이수자수,학기,단위,성취평가,원점수,평균,표준편차,분포,구분,세특
+['수학','수학',2,29,233,'1-1',3,'',94,79.7,12.2,'','일반과목','수학에 흥미와 관심을 갖고 성실하고 진지한 태도로 수업에 참여함. 기본개념과 공식에 대한 이해도가 높고 문제해결력이 뛰어남. 수업 중 제시한 문제에 대하여 본인 스스로 해결하고자 하는 의욕이 강하고, 이해가 되지 않는 부분은 친구들과의 토의나 교사의 도움으로 해결하고자 함. 자신이 해결한 문제를 미처 해결하지 못해 힘들어하는 친구에게 적절한 공식과 적용방법을 설명하고 이를 이용하여 문제를 해결할 수 있게 도움을 줌.'],
+['수학','수학',2,30,222,'1-2',3,'',95,80.2,13.2,'','일반과목','수학적 개념과 원리를 이해하고 문제 풀이 과정을 단계별로 정리하는 습관이 있음. 풀이 방법이 다른 친구의 의견을 듣고 자기 풀이와 비교하여 더 간단한 방법을 찾아 정리함.'],
+['수학','수학Ⅰ',3,23,220,'2-1',3,'',88,75.7,9.7,'','일반과목','지수·로그 함수의 그래프를 직접 그려 보며 성질을 확인함. 어려운 문제는 오답노트에 이유를 적고 다시 풀어 확인하는 학습 태도가 꾸준함.'],
+['수학','수학Ⅱ',3,33,221,'2-2',3,'',87,75.7,10.7,'','일반과목','미분의 개념을 속도와 변화율 사례로 설명하는 발표를 진행함. 발표 후 받은 질문을 정리하여 자료를 보완함.'],
+['수학','확률과 통계',3,32,220,'3-1',3,'',88,78.1,9.2,'','일반과목','자료를 표와 그래프로 정리하고 해석하는 활동에서 학급 설문 결과를 직접 분석함.'],
+['정보통신','프로그래밍 기초',2,12,36,'1-1',4,'A',92,80.5,9.1,'A(34.0) B(46.0) C(20.0)','전문교과','처음 접하는 프로그래밍 수업에서 오류가 났을 때 포기하지 않고 오류 메시지를 읽어 원인을 찾아 고침. 같은 모둠 친구에게 해결 과정을 설명하며 함께 완성함.'],
+['정보통신','인공지능 기초',2,10,36,'1-2',3,'A',94,81.2,8.7,'A(38.0) B(44.0) C(18.0)','전문교과','학습 데이터의 구성을 바꾸어 분류 결과가 어떻게 달라지는지 비교하고, 데이터를 수정한 이유와 재검증 결과를 기록함.'],
+['정보통신','네트워크 구축',3,15,36,'2-1',4,'B',84,78.3,10.4,'B(15.4) C(61.5) A(23.1)','전문교과','네트워크 장비 설정 실습에서 팀원과 역할을 나누고 연결 오류를 단계별로 점검해 해결함.'],
+['정보통신','빅데이터 분석',2,11,36,'2-2',3,'A',93,79.0,9.8,'A(36.0) B(47.0) C(17.0)','진로선택','공공 데이터를 수집·정리하여 학급 문제를 분석하는 프로젝트를 수행하고, 결과를 시각화하여 발표함.']];
+let flt='전체';
+$('#chips').innerHTML=['전체','일반과목','진로선택','전문교과'].map(c=>`<button class="${c==='전체'?'on':''}">${c}</button>`).join('');
+const COLS=['No','교과명','과목명','등급','추정등수','이수자수','학년-학기','단위수','성취평가','원점수','평균점수','표준편차','성취도별 분포비율','과목구분'];
+function drawSubj(){
+ let n=0;const rows=SUBJ.filter(r=>flt==='전체'||r[12]===flt);
+ $('#subj').innerHTML='<thead><tr>'+COLS.map(c=>`<th>${c}</th>`).join('')+'</tr></thead><tbody>'+rows.map((r,i)=>{n++;return `<tr data-i="${i}" style="cursor:pointer"><td>${n}</td><td>${r[0]}</td><td class="l"><a data-p="${SUBJ.indexOf(r)}">${r[1]}</a></td><td>${r[2]}</td><td class="hit"><a class="hit">${r[3]}</a></td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${r[8]}</td><td>${(+r[9]).toFixed(1)}</td><td>${r[10]}</td><td>${r[11]}</td><td>${r[12]}</td></tr><tr class="se${i?' closed':''}"><td colspan="14"><b>${r[1]} :</b> ${r[13]}</td></tr>`}).join('')+'</tbody>';
+ $$('#subj tr[data-i]').forEach(tr=>tr.onclick=e=>{if(e.target.dataset.p!==undefined)return;tr.nextElementSibling.classList.toggle('closed')});
+ $$('#subj a[data-p]').forEach(a=>a.onclick=e=>{e.stopPropagation();pop(SUBJ[+a.dataset.p],e)})}
+$$('#chips button').forEach(b=>b.onclick=()=>{flt=b.textContent;$$('#chips button').forEach(x=>x.classList.toggle('on',x===b));drawSubj()});
+function pop(r,e){$('#popr').innerHTML=[r[5],r[2],r[6],r[8],(+r[9]).toFixed(1),r[10],r[4]].map(v=>`<td>${v}</td>`).join('');const p=$('#pop');p.style.display='block';p.style.left=Math.min(e.clientX,innerWidth-p.offsetWidth-10)+'px';p.style.top=(e.clientY+14)+'px'}
+drawSubj();
+
+/* ---- 행동특성 ---- */
+const BEH=[['1학년','학급의 서기로서 학급회장단을 도와 {s|출결 관리 및 담당교사 확인 받기, 학급 회의록 작성 등의 활동에 책임감을 가지고 성실히 임함.} 학급 안에서 {s|친구들과 어울려 밝고 적극적으로 생활하며} 교실 환경에서 필요한 일을 먼저 찾아 정리함. 프로그래밍 수업에서 처음 접한 오류를 {s|포기하지 않고 끝까지 원인을 찾아 해결하는 모습을 보임.} 학교 규칙을 잘 지키고 {b|○○중학교} 출신 친구들과도 잘 어울림.'],
+['2학년','1학기 회장으로서 다른 임원들과 함께 학급 일을 성실히 수행하여 학급 분위기가 매우 우수하고 {s|학업성취도가 높으면서도 밝은 학급 분위기를 유지하여 선생님들의 칭찬을 많이 받는 좋은 학급을 만드는 리더십을 발휘함.} 항상 사람과 사람이 더불어 사는 게 가장 중요하고 소중한 가치라고 생각하여 학교 생활동안 반 친구들과의 관계에서 소통과 공감을 우선하며 도움을 받아야 할 땐 부끄러워하지 않고 친구들에게 먼저 도움을 청하여 해결함. 팀 프로젝트에서 역할이 겹치자 {s|친구들과 대화로 업무를 다시 나누어} 결과물을 완성함.'],
+['3학년','{s|스승의 날 깜짝파티를 계획하여 많은 선생님들의 마음을 즐겁게 해 주었음.} 해커톤에 팀원으로 참가하여 발표 자료를 맡았고, 심사 의견을 반영해 {s|발표 순서와 내용을 직접 고치는 과정을 거쳐} 팀의 발표를 완성함. 지원 분야와 관련하여 {b|○○대학교} 연계 캠프에 참여하며 진로 목표를 구체화함. 3학년 2학기까지 출결과 봉사활동을 꾸준히 관리함.']];
+let kw='';
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const hk=s=>kw?esc(s).split(esc(kw)).join(`<mark class="kw">${esc(kw)}</mark>`):esc(s);
+function drawBeh(){
+ $('#beh').innerHTML='<thead><tr><th style="width:70px">학년</th><th>행동특성 및 종합의견</th></tr></thead><tbody>'+BEH.map(([g,t])=>`<tr><td>${g}</td><td class="t">${t.split(/(\{[sb]\|[^}]*\})/).map(p=>{const m=p.match(/^\{([sb])\|(.*)\}$/);return m?`<mark class="${m[1]==='s'?'sim':'bl'}">${hk(m[2])}</mark>`:hk(p)}).join('')}</td></tr>`).join('')+'</tbody>'}
+drawBeh();
+$('#b-sim').onclick=function(){this.classList.toggle('on',document.body.classList.toggle('simon'))};
+$('#b-bl').onclick=function(){this.classList.toggle('on',document.body.classList.toggle('bloon'))};
+$('#b-kw').onclick=function(){const i=$('#kwin');i.classList.toggle('show');if(i.classList.contains('show'))i.focus();else{kw='';i.value='';drawBeh()}};
+$('#kwin').onkeydown=e=>{if(e.key==='Enter'){kw=e.target.value.trim();drawBeh()}};
+$('#b-sim').classList.add('on');
+
+/* ---- 교육과정편성표 · 이수교과리스트 ---- */
+// [이름,단위,이수여부] 학기별
+const T=true,F=false,p=(n,u,t=T)=>[n,u,t];
+const CUR=[
+['공통',[[p('국어',4),p('수학',4),p('영어',4),p('통합과학',3),p('통합사회',3),p('한국사',3)],[p('국어',4),p('수학',4),p('영어',4),p('통합과학',3),p('통합사회',3),p('한국사',3)],[p('과학탐구실험',1)],[p('과학탐구실험',1)],[],[]]],
+['일반선택',[[p('미술',2),p('체육',2)],[p('미술',2),p('보건',1),p('체육',2)],[p('문학',3),p('생활과 윤리',2),p('수학Ⅰ',3),p('정보',2),p('진로와 직업',1),p('체육',2)],[p('생활과 윤리',2),p('수학Ⅱ',3),p('언어와 매체',3,F),p('정보',2),p('진로와 직업',1),p('체육',2)],[p('독서',3),p('사회·문화',3),p('운동과 건강',2),p('진로와 직업',1),p('확률과 통계',3)],[p('보건',1,F),p('사회·문화',3,F),p('운동과 건강',2,F),p('진로와 직업',1,F),p('화법과 작문',3,F)]]],
+['진로선택',[[p('음악 감상과 비평',2)],[p('음악 감상과 비평',2)],[p('영어권 문화',2)],[p('영어권 문화',2)],[p('고전과 윤리',2),p('생활과 과학',2),p('여행지리',2,F)],[p('경제 수학',2,F),p('고전과 윤리',2,F),p('생활과 과학',2,F),p('여행지리',2,F)]]],
+['전문교과Ⅰ',[[p('프로그래밍 기초',4),p('인공지능 기초',3)],[p('프로그래밍 실무',4)],[p('네트워크 구축',4),p('자료구조',3),p('빅데이터 분석(선택1)',3),p('응용 프로그래밍 개발(선택2)',3,F)],[p('인공지능 일반',3)],[p('게임 프로그래밍',4),p('네트워크 프로그래밍',4),p('인공지능 모델링(선택1)',4),p('스마트 문화 앱 콘텐츠 제작(선택2)',4,F)],[p('3D 프린터용 제품 제작',4,F)]]]];
+const hash=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+function detail(n,sem,u){const h=hash(n+sem);return[sem.slice(0,3),2+h%3,u,84+h%13,'7'+(h%9)+'.'+(h%7),9+h%11,218+h%16]}
+$('#cur').innerHTML='<thead><tr><th>교과(군)</th><th>총 이수단위</th>'+SEM.map(s=>`<th>${s.slice(0,3)}학기</th>`).join('')+'</tr></thead><tbody>'+CUR.map(([k,cols],r)=>{const tot=cols.slice(0,5).flat().filter(x=>x[2]).reduce((a,x)=>a+x[1],0);return `<tr class="r${r}"><td class="k">${k}</td><td class="k" style="font-weight:400">${tot}</td>`+cols.map((c,ci)=>`<td>${c.map(x=>x[2]?`<a class="pill" data-d='${JSON.stringify(detail(x[0],SEM[ci],x[1]))}'>${x[0]}</a>`:`<span class="plain">${x[0]}</span>`).join('')}</td>`).join('')+'</tr>'}).join('')+'</tbody>';
+$$('#cur a.pill').forEach(a=>a.onclick=e=>{$('#popr').innerHTML=JSON.parse(a.dataset.d).map(v=>`<td>${v}</td>`).join('');const q=$('#pop');q.style.display='block';q.style.left=Math.min(e.clientX,innerWidth-q.offsetWidth-10)+'px';q.style.top=(e.clientY+14)+'px'});
+let no=0;
+$('#list').innerHTML='<thead><tr><th>No</th><th>교과(군)</th><th>과목명</th><th>학기</th><th>단위수</th></tr></thead><tbody>'+CUR.flatMap(([k,cols])=>cols.flatMap((c,ci)=>c.filter(x=>x[2]).map(x=>`<tr><td>${++no}</td><td>${k}</td><td class="l">${x[0]}</td><td>${SEM[ci].slice(0,3)}</td><td>${x[1]}</td></tr>`))).join('')+'</tbody>';
+document.addEventListener('click',e=>{if(!e.target.closest('#pop,a[data-p],a.pill'))$('#pop').style.display='none'});
+tab(/^#t(\d)/.test(location.hash)?+location.hash[2]:0);
+if(location.hash.includes('nohelp'))$('#hb').click();
+</script>
+</body>
+</html>
