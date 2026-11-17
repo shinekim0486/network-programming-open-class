@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>네트워크프로그래밍 실습 지시서</title>
+<style>
+:root{--navy:#17345f;--blue:#2463eb;--sky:#eef5ff;--ink:#172033;--muted:#64748b;--line:#cfd8e5;--warn:#fff7e6;--green:#087443}*{box-sizing:border-box}body{margin:0;background:#edf1f6;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.55}.sheet{width:min(980px,calc(100% - 24px));margin:24px auto;background:white;box-shadow:0 12px 40px #243b6420}.hero{padding:38px 48px;background:linear-gradient(135deg,#10294c,#2463eb);color:white}.hero small{font-weight:800;letter-spacing:.16em;opacity:.78}.hero h1{margin:7px 0 3px;font-size:35px;letter-spacing:-.04em}.hero p{margin:0;color:#dbeafe;font-size:18px}.content{padding:34px 48px 54px}.rules{margin:0 0 30px;padding:20px 24px;border-radius:14px;background:#fff8e9;border:1px solid #f7d487}.rules h2{margin:0 0 10px;color:#8a4b08;font-size:18px}.rules ol{margin:0;padding-left:23px}.rules li+li{margin-top:6px}.step{margin:36px 0 0}.step-title{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid var(--navy)}.num{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--navy);color:white;font-weight:900}.step-title h2{margin:0;font-size:23px;letter-spacing:-.03em}.subtitle{color:var(--muted);font-size:14px;font-weight:500}table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:14px}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top}th{background:#edf3fa;color:#263b5c}td.center{text-align:center}code,pre{font-family:Consolas,monospace}.code{padding:18px 20px;background:#111d33;color:#e8f0ff;border-radius:12px;white-space:pre-wrap;font-size:13px;overflow:auto}.tip,.warning,.check-note{margin:14px 0;padding:13px 16px;border-radius:10px}.tip{background:var(--sky);border-left:4px solid var(--blue)}.warning{background:var(--warn);border-left:4px solid #d97706}.check-note{background:#ecfdf3;border-left:4px solid var(--green)}.blank{display:block;width:100%;min-height:42px;padding:8px 10px;border:1px solid #b6c1d0;border-radius:6px;background:#fff;font:inherit;resize:vertical}.blank.line{min-height:0;height:38px}.blank.tall{min-height:82px}.teacher{height:72px;border:2px solid var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;margin:16px 0;font-weight:800}.teacher span:last-child{width:160px;border-bottom:1px solid #334155;height:32px}.prompt{padding:18px;border:2px solid #8bb3ff;border-radius:12px;background:#f8fbff;white-space:pre-wrap;font-family:Consolas,"Malgun Gothic",monospace;font-size:13px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.choices{columns:2;column-gap:30px}.choices li{break-inside:avoid;margin-bottom:7px}.checklist{list-style:none;padding:0;margin:12px 0}.checklist li{margin:8px 0}.checklist input{width:18px;height:18px;vertical-align:-3px;margin-right:8px}.toolbar{position:sticky;top:0;z-index:2;display:flex;gap:8px;justify-content:flex-end;padding:10px 16px;background:#ffffffed;border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}button{border:0;border-radius:8px;padding:9px 14px;background:var(--navy);color:#fff;font-weight:750;cursor:pointer}button.secondary{background:#e8eef7;color:#263b5c}.muted{color:var(--muted);font-size:13px}.pagebreak{break-before:page}.save{color:var(--green);font-size:12px;margin-right:auto;align-self:center}@media(max-width:700px){.hero,.content{padding:26px 20px}.two{grid-template-columns:1fr}.choices{columns:1}.hero h1{font-size:28px}.toolbar{position:static}}@media print{body{background:white}.sheet{width:100%;margin:0;box-shadow:none}.toolbar{display:none}.hero{print-color-adjust:exact;-webkit-print-color-adjust:exact}.content{padding:25px 34px}.step{break-inside:auto}.code,.prompt,.rules,.tip,.warning,.check-note,th{print-color-adjust:exact;-webkit-print-color-adjust:exact}.blank{border:1px solid #778399}.pagebreak{break-before:page}}
+</style>
+</head>
+<body><div class="sheet">
+<div class="toolbar"><span class="save" id="saveState">입력 내용은 이 기기에 자동 저장됩니다.</span><button class="secondary" onclick="clearForm()">입력 지우기</button><button onclick="window.print()">인쇄 / PDF 저장</button></div>
+<header class="hero"><small>NETWORK PROGRAMMING · PRACTICE GUIDE</small><h1>네트워크프로그래밍 실습 지시서</h1><p>공공데이터를 활용한 강동구 와이파이 사용 대시보드 만들기</p></header>
+<main class="content">
+<section class="rules"><h2>■ 오늘의 규칙</h2><ol><li>AI가 만든 화면은 초안이다. 검증하기 전에는 제출물이 아니다.</li><li>설계 카드를 쓰고 교사 확인을 받기 전에는 안티그래비티를 실행하지 않는다.</li><li>API 키는 코드에 직접 쓰지 않고, 밖으로 내보내지 않으며, 수업이 끝나면 반납한다.</li><li>이름·연락처 등 개인정보는 AI 도구에 입력하지 않는다.</li></ol></section>
+
+<section class="step"><div class="step-title"><span class="num">1</span><h2>자료 들여다보기 <span class="subtitle">파일을 열어 직접 확인한다</span></h2></div>
+<table><thead><tr><th>파일</th><th>형식</th><th>내용</th><th>건 수</th></tr></thead><tbody><tr><td>강동구 공공와이파이 설치현황</td><td>JSON</td><td>DATA 배열 안에 AP가 1건씩 들어 있다</td><td>1,175</td></tr><tr><td>서울시 공공와이파이 AP별 사용량 (2021)</td><td>ZIP<br>(CSV 3개)</td><td>고정형 10,191행 / 시내버스 7,370행 / 마을버스 1,583행</td><td>19,144</td></tr><tr><td>지하철 역사 AP 현황 (선택 참고)</td><td>CSV</td><td>호선별·통신사별 AP 수</td><td>8</td></tr></tbody></table>
+<div class="warning"><strong>자료 기준</strong> — 사용량은 2021년 5월 1일~10월 13일에 측정한 값이다.</div>
+<div class="two"><div><h3>설치현황 JSON 예시</h3><pre class="code">{
+ "DATA" : [{
+  "x_swifi_mgr_no" : "WF201051",
+  "x_swifi_main_nm" : "강동리본센터",
+  "x_swifi_instl_ty" : "6-6. 복지 - 기타",
+  "x_swifi_cnstc_year" : "2024",
+  "x_swifi_inout_door" : "실내",
+  "x_swifi_wrdofc" : "강동구",
+  "lat":"37.523857", "lnt":"127.13023"
+ }]
+}</pre></div><div><h3>사용량 CSV(고정형) 예시</h3><pre class="code">관리번호,자치구,AP별 이용량(GB)
+WF201103,강동구,3155.4433001
+GD130050,강동구,1233.1168773
+WF201101,강동구,1142.5172677
+...</pre></div></div>
+<h3>먼저 확인할 것</h3><table><tbody><tr><th style="width:36px">①</th><td>설치현황 JSON에 AP가 몇 건 들어 있나?</td><td style="width:190px"><input class="blank line" data-save aria-label="AP 건수"> 건</td></tr><tr><th>②</th><td>설치유형은 몇 종류인가?</td><td><input class="blank line" data-save aria-label="설치유형 수"> 종류</td></tr><tr><th>③</th><td>압축 안의 CSV 세 개 중 우리가 쓸 파일은?<br>그 이유는?</td><td><input class="blank line" data-save aria-label="사용할 CSV"><textarea class="blank" data-save aria-label="CSV 선택 이유"></textarea></td></tr><tr><th>④</th><td>그 파일에서 자치구가 ‘강동구’인 행은 몇 줄인가?</td><td><input class="blank line" data-save aria-label="강동구 행 수"> 줄</td></tr><tr><th>⑤</th><td>두 자료를 이어 붙일 수 있는 공통 칸의 이름은?</td><td>JSON <input class="blank line" data-save aria-label="JSON 공통 칸">CSV <input class="blank line" data-save aria-label="CSV 공통 칸"></td></tr></tbody></table>
+</section>
+
+<section class="step pagebreak"><div class="step-title"><span class="num">2</span><h2>설계 카드 <span class="subtitle">시키기 전에 먼저 쓴다</span></h2></div><div class="warning">다섯 칸을 모두 채우고 <strong>교사 확인을 받은 뒤</strong> 안티그래비티를 실행한다.</div>
+<table><thead><tr><th style="width:44px">항목</th><th style="width:31%">질문</th><th>내가 쓴 것</th></tr></thead><tbody><tr><th>①</th><td>무엇을 보여줄 것인가 (한 문장)</td><td><textarea class="blank" data-save></textarea></td></tr><tr><th>②</th><td>어떤 숫자(컬럼)를 쓸 것인가</td><td><textarea class="blank" data-save></textarea></td></tr><tr><th>③</th><td>어떤 그림으로 보여줄 것인가<br>(숫자 / 막대 / 표 / 지도)</td><td><textarea class="blank" data-save></textarea></td></tr><tr><th>④</th><td>이 화면을 보고 무엇을 판단할 수 있나</td><td><textarea class="blank" data-save></textarea></td></tr><tr><th>⑤</th><td>예상 결과 — 숫자가 대략 얼마쯤 나올까</td><td><textarea class="blank" data-save></textarea></td></tr></tbody></table>
+<div class="teacher"><span>교사 확인</span><span></span></div>
+<div class="tip"><strong>무엇을 만들지 모르겠다면</strong><ul class="choices"><li>설치유형별 개수 막대그래프</li><li>설치년도별 개수 막대그래프</li><li>사용량 상위 10곳 표</li><li>전체 AP·설치 장소·설치유형 수</li><li>AP 위치 지도</li></ul></div></section>
+
+<section class="step pagebreak"><div class="step-title"><span class="num">3</span><h2>만들기 <span class="subtitle">안티그래비티 지시문</span></h2></div><h3>1단계 · 만들기</h3><div class="prompt">첨부한 자료로 강동구 공공와이파이 현황 대시보드를
+HTML 한 파일로 만들어 줘.
+
+[자료]
+- 설치현황 : JSON 파일. DATA 배열 안에 AP가 1건씩 들어 있다.
+- 사용량   : CSV 파일. 자치구가 '강동구'인 행만 쓴다.
+- 두 자료는 [ 공통 칸 이름 ] 으로 연결한다.
+
+[만들 것]
+- 보여줄 것 : [설계 카드 ①]
+- 쓸 컬럼   : [설계 카드 ②]
+- 화면 형태 : [설계 카드 ③]
+- 지도를 쓸 경우 Google Maps를 쓰고,
+  API 키는 코드 맨 위 설정 변수 한 곳에만 둔다.
+
+만들기 전에 무엇을 할 것인지 먼저 알려 줘.</div>
+<div class="check-note">★ 보내기 전 확인: ① 자료를 첨부했나 ② 압축을 풀어 필요한 CSV 하나만 올렸나<br>★ AI가 보여주는 작업 계획을 읽고 승인한다. 읽지 않고 누르지 않는다.</div>
+<h3>2단계 · 고치기</h3><table><thead><tr><th>이렇게 말하면 안 된다</th><th>이렇게 말해야 한다</th></tr></thead><tbody><tr><td>“전체적으로 더 예쁘게 해 줘”</td><td>“막대 색을 파란색 하나로 통일해 줘”</td></tr><tr><td>“좀 이상한데 고쳐 줘”</td><td>“막대 아래 글씨가 겹쳐. 비스듬히 눕혀 줘”</td></tr><tr><td>“데이터가 틀린 것 같아”</td><td>“설치유형이 20개여야 하는데 18개만 나와”</td></tr></tbody></table>
+<div class="prompt">지금 화면에서 [바꿀 것 한 가지]만 고쳐 줘. 나머지는 그대로 둬.
+
+(에러가 났을 때)
+아래 에러가 났어. 원인과 고친 코드를 알려 줘.
+[에러 메시지 그대로 붙여넣기]</div>
+<h3>수정 기록</h3><table><thead><tr><th style="width:40px">#</th><th>무엇을 바꿨나</th><th>왜 바꿨나</th></tr></thead><tbody id="changes"></tbody></table></section>
+
+<section class="step pagebreak"><div class="step-title"><span class="num">4</span><h2>검증 <span class="subtitle">숫자가 맞는지 대조한다</span></h2></div><div class="warning">AI는 틀린 숫자도 자신 있게 보여준다. 맞는지 확인하는 건 사람의 일이다.</div>
+<h3>3단계 · 검증 질문</h3><div class="prompt">질문 세 개에 답해 줘. 코드는 고치지 말고 답만 해.
+
+1. 이 화면에 전체 AP가 몇 개로 나와 있어?
+   설치현황 JSON의 DATA 건수와 같아?
+2. 두 자료를 이었을 때 사용량이 붙은 AP는 몇 개야?
+   사용량 자료가 없는 AP는 어떻게 처리했어?
+   0으로 채웠어, 아니면 뺐어?
+3. 그렇게 처리했을 때 화면이 사실과 달라지는 부분이 있어?</div>
+<h3>AI의 답을 요약해 적는다</h3><textarea class="blank tall" data-save></textarea>
+<h3>직접 세어 확인하기</h3><p class="muted">AI가 말한 숫자를 ‘내가 센 값’에 옮겨 적지 않는다. 내가 센 값만 적는다.</p><table><thead><tr><th>확인 항목</th><th>화면에 나온 값</th><th>내가 직접 센 값</th><th>같나?</th></tr></thead><tbody><tr><td>전체 AP 수</td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td></tr><tr><td>사용량이 붙은 AP 수</td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td></tr><tr><td><input class="blank line" data-save placeholder="확인 항목"></td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td><td><input class="blank line" data-save></td></tr></tbody></table>
+<h3>설계 카드 ⑤와 비교</h3><table><thead><tr><th>내가 예상했던 값</th><th>실제 나온 값</th><th>차이가 났다면 그 이유는?</th></tr></thead><tbody><tr><td><textarea class="blank" data-save></textarea></td><td><textarea class="blank" data-save></textarea></td><td><textarea class="blank" data-save></textarea></td></tr></tbody></table>
+<div class="tip"><strong>이상하다 싶으면 이렇게 묻는다</strong><ul><li>“이 숫자는 어느 파일의 어느 칸에서 나온 거야?”</li><li>“사용량이 0인 AP가 몇 개야? 왜 0이야?”</li><li>“2022년에 설치된 AP는 몇 개야? 사용량 자료는 몇 년도 거야?”</li></ul></div></section>
+
+<section class="step pagebreak"><div class="step-title"><span class="num">5</span><h2>바로잡기와 정리</h2></div><h3>4단계 · 바로잡기</h3><div class="prompt">사용량 자료가 없는 AP는 0이 아니라 '측정 자료 없음'으로
+구분해서 표시해 줘.
+
+그리고 화면 맨 위에 데이터 기준 한 줄을 넣어 줘.
+"설치현황 □□□□개(2026년 기준) ·
+ 사용량 □□□개(2021년 5월 1일~10월 13일 측정분)"</div><div class="warning">★ □ 안에는 내가 직접 센 숫자를 넣는다. 이 한 줄이 없으면 이 대시보드는 거짓말을 한다.</div>
+<h3>발견 한 문장</h3><textarea class="blank" data-save placeholder="내 화면에서 읽어낸 것을 한 문장으로 쓴다."></textarea>
+<h3>짝과 바꿔 보기</h3><table><thead><tr><th>짝의 학번·이름</th><th>짝에게 물어본 것</th><th>짝의 답</th></tr></thead><tbody><tr><td><textarea class="blank" data-save></textarea></td><td><textarea class="blank" data-save></textarea></td><td><textarea class="blank" data-save></textarea></td></tr></tbody></table>
+<h3>3문장 회고</h3><table><tbody><tr><th style="width:150px">처음 생각한 것</th><td><textarea class="blank" data-save></textarea></td></tr><tr><th>내가 본 증거</th><td><textarea class="blank" data-save></textarea></td></tr><tr><th>바꾼 판단</th><td><textarea class="blank" data-save></textarea></td></tr></tbody></table>
+<h3>막혔을 때</h3><table><thead><tr><th>이런 상황</th><th>이렇게 한다</th></tr></thead><tbody><tr><td>무엇을 만들지 모르겠다</td><td>2번 아래 목록에서 하나 고른다.</td></tr><tr><td>AI가 엉뚱한 걸 만들었다</td><td>설계 카드 ①을 그대로 다시 보낸다.</td></tr><tr><td>에러가 났다</td><td>에러 메시지를 그대로 복사해서 보낸다.</td></tr><tr><td>숫자가 안 맞는다</td><td>“이 숫자는 어느 칸에서 나온 거야?”라고 묻는다.</td></tr><tr><td>지도가 안 뜬다</td><td>API 키 설정 칸을 확인하고, 안 되면 선생님께 말한다.</td></tr><tr><td>시간이 모자란다</td><td>완성보다 검증이 먼저다. 4번을 꼭 한다.</td></tr></tbody></table>
+<h3>제출 확인</h3><ul class="checklist"><li><label><input type="checkbox" data-save>설계 카드 5칸을 채웠다 (교사 확인 받음)</label></li><li><label><input type="checkbox" data-save>수정 기록을 적었다</label></li><li><label><input type="checkbox" data-save>화면 숫자를 원본에서 직접 세어 확인했다</label></li><li><label><input type="checkbox" data-save>‘측정 자료 없음’을 구분해 표시했다</label></li><li><label><input type="checkbox" data-save>데이터 기준 줄을 화면 맨 위에 넣었다</label></li><li><label><input type="checkbox" data-save>대시보드 파일을 저장해 제출했다</label></li><li><label><input type="checkbox" data-save>API 키를 반납했다</label></li></ul></section>
+</main></div>
+<script>
+const fields=[...document.querySelectorAll('[data-save]')];
+const KEY='gangdong-wifi-worksheet-v1';
+for(let i=1;i<=4;i++)document.querySelector('#changes').insertAdjacentHTML('beforeend',`<tr><td class="center">${i}</td><td><textarea class="blank" data-save></textarea></td><td><textarea class="blank" data-save></textarea></td></tr>`);
+function allFields(){return [...document.querySelectorAll('[data-save]')]}
+function save(){const data=allFields().map(x=>x.type==='checkbox'?x.checked:x.value);localStorage.setItem(KEY,JSON.stringify(data));document.querySelector('#saveState').textContent='저장됨 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});}
+function load(){try{const data=JSON.parse(localStorage.getItem(KEY)||'[]');allFields().forEach((x,i)=>{if(data[i]===undefined)return;x.type==='checkbox'?x.checked=data[i]:x.value=data[i]})}catch(e){}}
+function clearForm(){if(!confirm('이 기기에 저장된 모든 작성 내용을 지울까요?'))return;localStorage.removeItem(KEY);allFields().forEach(x=>x.type==='checkbox'?x.checked=false:x.value='');document.querySelector('#saveState').textContent='입력 내용이 지워졌습니다.'}
+document.addEventListener('input',e=>{if(e.target.matches('[data-save]'))save()});document.addEventListener('change',e=>{if(e.target.matches('[data-save]'))save()});load();
+</script></body></html>
